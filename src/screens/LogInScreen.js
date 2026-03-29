@@ -53,7 +53,11 @@ export default function LogInScreen({ navigation }) {
             <Text style={styles.forgot}>Forgot Password?</Text>
           </TouchableOpacity>
 
-          <Button title="Log In" onPress={() => {}} style={styles.button} />
+          <Button
+          title="Log In"
+          onPress={() => navigation.replace("MainTabs")}
+          style={styles.button}
+          />
 
           <TouchableOpacity
             style={styles.bottomWrap}
