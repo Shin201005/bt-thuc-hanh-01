@@ -38,7 +38,6 @@ const styles = StyleSheet.create({
     flexDirection: "row",
   },
 
-  // ✅ FIX ĐÚNG CHO IMAGE
   carrot: {
     width: 42,
     height: 42,
