@@ -15,6 +15,10 @@ import ProductDetailScreen from "../screens/ProductDetailScreen";
 import ExploreScreen from "../screens/ExploreScreen";
 import CategoryProductsScreen from "../screens/CategoryProductsScreen";
 import MainTabs from "./MainTabs";
+import SearchScreen from "../screens/SearchScreen";
+import FilterScreen from "../screens/FilterScreen";
+import CartScreen from "../screens/CartScreen";
+import FavouriteScreen from "../screens/FavouriteScreen";
 const Stack = createNativeStackNavigator();
 
 export default function AppNavigator() {
@@ -40,6 +44,10 @@ export default function AppNavigator() {
         <Stack.Screen name="Explore" component={ExploreScreen} />
         <Stack.Screen name="CategoryProducts" component={CategoryProductsScreen} />
         <Stack.Screen name="MainTabs" component={MainTabs} />
+        <Stack.Screen name="Search" component={SearchScreen} />
+        <Stack.Screen name="Filter" component={FilterScreen} />
+        <Stack.Screen name="Cart" component={CartScreen} />
+        <Stack.Screen name="Favourite" component={FavouriteScreen} />
       </Stack.Navigator>
     </NavigationContainer>
   );

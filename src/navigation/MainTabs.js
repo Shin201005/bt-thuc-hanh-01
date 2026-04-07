@@ -4,6 +4,9 @@ import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
 import colors from "../styles/colors";
 
 import HomeScreen from "../screens/HomeScreen";
+import SearchScreen from "../screens/SearchScreen";
+import CartScreen from "../screens/CartScreen";
+import FavouriteScreen from "../screens/FavouriteScreen";
 import ExploreScreen from "../screens/ExploreScreen";
 
 const Tab = createBottomTabNavigator();
@@ -24,7 +27,7 @@ function TabIcon({ icon, label, focused }) {
 export default function MainTabs() {
   return (
     <Tab.Navigator
-      initialRouteName="ExploreTab"
+      initialRouteName="ShopTab"
       screenOptions={{
         headerShown: false,
         tabBarShowLabel: false,
@@ -43,7 +46,7 @@ export default function MainTabs() {
 
       <Tab.Screen
         name="ExploreTab"
-        component={ExploreScreen}
+        component={SearchScreen}
         options={{
           tabBarIcon: ({ focused }) => (
             <TabIcon icon="⌕" label="Explore" focused={focused} />
@@ -53,7 +56,7 @@ export default function MainTabs() {
 
       <Tab.Screen
         name="CartTab"
-        component={HomeScreen}
+        component={CartScreen}
         options={{
           tabBarIcon: ({ focused }) => (
             <TabIcon icon="🛒" label="Cart" focused={focused} />
@@ -63,7 +66,7 @@ export default function MainTabs() {
 
       <Tab.Screen
         name="FavouriteTab"
-        component={HomeScreen}
+        component={FavouriteScreen}
         options={{
           tabBarIcon: ({ focused }) => (
             <TabIcon icon="♡" label="Favourite" focused={focused} />
@@ -73,7 +76,7 @@ export default function MainTabs() {
 
       <Tab.Screen
         name="AccountTab"
-        component={HomeScreen}
+        component={ExploreScreen}
         options={{
           tabBarIcon: ({ focused }) => (
             <TabIcon icon="◔" label="Account" focused={focused} />
