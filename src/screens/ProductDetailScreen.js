@@ -1,3 +1,4 @@
+import { useCart } from "../context/CartContext";
 import React, { useState } from "react";
 import {
   View,
@@ -11,6 +12,13 @@ import Button from "../components/Button";
 import colors from "../styles/colors";
 
 export default function ProductDetailScreen({ navigation, route }) {
+  const { addToCart } = useCart();
+
+const handleAddToBasket = () => {
+  for (let i = 0; i < qty; i++) {
+    addToCart(product);
+  }
+};
   const product = route.params?.product;
   const [qty, setQty] = useState(1);
 
@@ -79,7 +87,11 @@ export default function ProductDetailScreen({ navigation, route }) {
             <Text style={styles.stars}>★★★★★</Text>
           </View>
 
-          <Button title="Add To Basket" onPress={() => {}} style={styles.button} />
+          <Button
+            title="Add To Basket"
+            onPress={handleAddToBasket}
+            style={styles.button}
+          />
         </View>
       </ScrollView>
     </View>

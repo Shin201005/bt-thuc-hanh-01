@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import {
   View,
   Text,
@@ -10,8 +10,11 @@ import {
 import Button from "../components/Button";
 import colors from "../styles/colors";
 import { products } from "../data/data";
+import OrderFailedScreen from "./OrderFailedScreen";
 
-export default function FavouriteScreen() {
+export default function FavouriteScreen({ navigation }) {
+  const [showError, setShowError] = useState(false);
+
   const favouriteItems = products.filter((item) => item.isFavourite);
 
   const renderItem = ({ item }) => (
@@ -43,10 +46,16 @@ export default function FavouriteScreen() {
         ListFooterComponent={
           <Button
             title="Add All To Cart"
-            onPress={() => {}}
+            onPress={() => setShowError(true)}
             style={styles.button}
           />
         }
+      />
+
+      <OrderFailedScreen
+        visible={showError}
+        onClose={() => setShowError(false)}
+        navigation={navigation}
       />
     </View>
   );

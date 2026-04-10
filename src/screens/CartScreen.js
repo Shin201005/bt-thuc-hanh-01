@@ -1,4 +1,6 @@
-import React, { useMemo, useState } from "react";
+
+import CheckoutScreen from "./CheckoutScreen";
+import React, { useState } from "react";
 import {
   View,
   Text,
@@ -9,36 +11,17 @@ import {
 } from "react-native";
 import Button from "../components/Button";
 import colors from "../styles/colors";
-import { cartItems as initialCart } from "../data/data";
+import { useCart } from "../context/CartContext";
 
-export default function CartScreen() {
-  const [items, setItems] = useState(initialCart);
-
-  const increaseQty = (id) => {
-    setItems((prev) =>
-      prev.map((item) =>
-        item.id === id ? { ...item, qty: item.qty + 1 } : item
-      )
-    );
-  };
-
-  const decreaseQty = (id) => {
-    setItems((prev) =>
-      prev.map((item) =>
-        item.id === id
-          ? { ...item, qty: item.qty > 1 ? item.qty - 1 : 1 }
-          : item
-      )
-    );
-  };
-
-  const removeItem = (id) => {
-    setItems((prev) => prev.filter((item) => item.id !== id));
-  };
-
-  const total = useMemo(() => {
-    return items.reduce((sum, item) => sum + item.price * item.qty, 0);
-  }, [items]);
+export default function CartScreen({ navigation }) {
+  const [showCheckout, setShowCheckout] = useState(false);
+  const {
+    cartItems,
+    increaseQty,
+    decreaseQty,
+    removeFromCart,
+    totalAmount,
+  } = useCart();
 
   const renderItem = ({ item }) => (
     <View style={styles.itemWrap}>
@@ -51,7 +34,7 @@ export default function CartScreen() {
             <Text style={styles.sub}>{item.subtitle}</Text>
           </View>
 
-          <TouchableOpacity onPress={() => removeItem(item.id)}>
+          <TouchableOpacity onPress={() => removeFromCart(item.id)}>
             <Text style={styles.remove}>✕</Text>
           </TouchableOpacity>
         </View>
@@ -86,20 +69,31 @@ export default function CartScreen() {
       <Text style={styles.title}>My Cart</Text>
 
       <FlatList
-        data={items}
+        data={cartItems}
         keyExtractor={(item) => item.id}
         renderItem={renderItem}
         contentContainerStyle={styles.list}
         showsVerticalScrollIndicator={false}
+        ListEmptyComponent={
+          <Text style={styles.emptyText}>Cart của bạn đang trống</Text>
+        }
         ListFooterComponent={
-          <Button
-            title={`Go to Checkout        $${total.toFixed(2)}`}
-            onPress={() => {}}
-            style={styles.checkoutButton}
-          />
+          cartItems.length > 0 ? (
+            <Button
+              title={`Go to Checkout        $${totalAmount.toFixed(2)}`}
+              onPress={() => setShowCheckout(true)}
+              style={styles.checkoutButton}
+            />
+          ) : null
         }
       />
+      <CheckoutScreen
+        visible={showCheckout}
+        onClose={() => setShowCheckout(false)}
+        navigation={navigation}
+/>
     </View>
+    
   );
 }
 
@@ -188,5 +182,11 @@ const styles = StyleSheet.create({
   },
   checkoutButton: {
     marginTop: 24,
+  },
+  emptyText: {
+    textAlign: "center",
+    marginTop: 40,
+    color: colors.subText,
+    fontSize: 16,
   },
 });

@@ -1,3 +1,4 @@
+import { useCart } from "../context/CartContext";
 import React, { useMemo, useState } from "react";
 import {
   View,
@@ -11,7 +12,7 @@ import {
 import colors from "../styles/colors";
 import { products } from "../data/data";
 
-function ProductCard({ item }) {
+function ProductCard({ item, onAdd }) {
   return (
     <View style={styles.card}>
       <Image source={item.image} style={styles.cardImage} resizeMode="contain" />
@@ -20,7 +21,7 @@ function ProductCard({ item }) {
 
       <View style={styles.cardBottom}>
         <Text style={styles.price}>${item.price.toFixed(2)}</Text>
-        <TouchableOpacity style={styles.plusBtn}>
+        <TouchableOpacity style={styles.plusBtn} onPress={() => onAdd(item)}>
           <Text style={styles.plusText}>+</Text>
         </TouchableOpacity>
       </View>
@@ -29,6 +30,7 @@ function ProductCard({ item }) {
 }
 
 export default function SearchScreen({ navigation, route }) {
+  const { addToCart } = useCart();
   const [keyword, setKeyword] = useState("Egg");
 
   const selectedCategories = route?.params?.selectedCategories || [];
@@ -111,7 +113,9 @@ export default function SearchScreen({ navigation, route }) {
         ListEmptyComponent={
           <Text style={styles.emptyText}>Không có sản phẩm phù hợp</Text>
         }
-        renderItem={({ item }) => <ProductCard item={item} />}
+        renderItem={({ item }) => (
+        <ProductCard item={item} onAdd={addToCart} />
+        )}
       />
     </View>
   );

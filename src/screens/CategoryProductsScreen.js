@@ -1,3 +1,4 @@
+import { useCart } from "../context/CartContext";
 import React from "react";
 import {
   View,
@@ -10,7 +11,7 @@ import {
 import colors from "../styles/colors";
 import { beverages } from "../data/mockData";
 
-function ProductCard({ item, onPress }) {
+function ProductCard({ item, onPress, onAdd }) {
   return (
     <TouchableOpacity style={styles.card} activeOpacity={0.85} onPress={onPress}>
       <Image source={item.image} style={styles.cardImage} resizeMode="contain" />
@@ -19,7 +20,13 @@ function ProductCard({ item, onPress }) {
 
       <View style={styles.cardBottom}>
         <Text style={styles.price}>${item.price.toFixed(2)}</Text>
-        <TouchableOpacity style={styles.plusBtn}>
+        <TouchableOpacity
+          style={styles.plusBtn}
+          onPress={(e) => {
+            e.stopPropagation?.();
+            onAdd(item);
+          }}
+        >
           <Text style={styles.plusText}>+</Text>
         </TouchableOpacity>
       </View>
@@ -28,6 +35,7 @@ function ProductCard({ item, onPress }) {
 }
 
 export default function CategoryProductsScreen({ navigation }) {
+  const { addToCart } = useCart();
   return (
     <View style={styles.safe}>
       <View style={styles.header}>
@@ -45,11 +53,13 @@ export default function CategoryProductsScreen({ navigation }) {
         showsVerticalScrollIndicator={false}
         columnWrapperStyle={styles.row}
         contentContainerStyle={styles.list}
-        renderItem={({ item }) => (
-          <ProductCard
-            item={item}
-            onPress={() => navigation.navigate("ProductDetail", { product: item })}
-          />
+        
+       renderItem={({ item }) => (
+        <ProductCard
+          item={item}
+          onAdd={addToCart}
+          onPress={() => navigation.navigate("ProductDetail", { product: item })}
+        />
         )}
       />
     </View>

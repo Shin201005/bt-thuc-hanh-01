@@ -1,3 +1,4 @@
+import { useCart } from "../context/CartContext";
 import React from "react";
 import { View, Text, StyleSheet } from "react-native";
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
@@ -8,7 +9,7 @@ import SearchScreen from "../screens/SearchScreen";
 import CartScreen from "../screens/CartScreen";
 import FavouriteScreen from "../screens/FavouriteScreen";
 import ExploreScreen from "../screens/ExploreScreen";
-
+import AccountScreen from "../screens/AccountScreen";
 const Tab = createBottomTabNavigator();
 
 function TabIcon({ icon, label, focused }) {
@@ -25,6 +26,7 @@ function TabIcon({ icon, label, focused }) {
 }
 
 export default function MainTabs() {
+  const { totalItems } = useCart();
   return (
     <Tab.Navigator
       initialRouteName="ShopTab"
@@ -54,35 +56,36 @@ export default function MainTabs() {
         }}
       />
 
-      <Tab.Screen
-        name="CartTab"
-        component={CartScreen}
-        options={{
-          tabBarIcon: ({ focused }) => (
-            <TabIcon icon="🛒" label="Cart" focused={focused} />
-          ),
-        }}
-      />
+     <Tab.Screen
+  name="CartTab"
+  component={CartScreen}
+  options={{
+    tabBarBadge: totalItems > 0 ? totalItems : undefined,
+    tabBarIcon: ({ focused }) => (
+      <TabIcon icon="🛒" label="Cart" focused={focused} />
+    ),
+  }}
+/>
 
-      <Tab.Screen
-        name="FavouriteTab"
-        component={FavouriteScreen}
-        options={{
-          tabBarIcon: ({ focused }) => (
-            <TabIcon icon="♡" label="Favourite" focused={focused} />
-          ),
-        }}
-      />
+<Tab.Screen
+  name="FavouriteTab"
+  component={FavouriteScreen}
+  options={{
+    tabBarIcon: ({ focused }) => (
+      <TabIcon icon="♡" label="Favourite" focused={focused} />
+    ),
+  }}
+/>
 
-      <Tab.Screen
-        name="AccountTab"
-        component={ExploreScreen}
-        options={{
-          tabBarIcon: ({ focused }) => (
-            <TabIcon icon="◔" label="Account" focused={focused} />
-          ),
-        }}
-      />
+<Tab.Screen
+  name="AccountTab"
+  component={AccountScreen}
+  options={{
+    tabBarIcon: ({ focused }) => (
+      <TabIcon icon="◔" label="Account" focused={focused} />
+    ),
+  }}
+/>
     </Tab.Navigator>
   );
 }

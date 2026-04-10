@@ -1,3 +1,4 @@
+import { useCart } from "../context/CartContext";
 import React from "react";
 import {
   View,
@@ -15,7 +16,7 @@ import {
   groceries,
 } from "../data/mockData";
 
-function ProductCard({ item, onPress }) {
+function ProductCard({ item, onPress, onAdd }) {
   return (
     <TouchableOpacity style={styles.card} activeOpacity={0.85} onPress={onPress}>
       <Image source={item.image} style={styles.cardImage} resizeMode="contain" />
@@ -24,7 +25,13 @@ function ProductCard({ item, onPress }) {
 
       <View style={styles.cardBottom}>
         <Text style={styles.price}>${item.price.toFixed(2)}</Text>
-        <TouchableOpacity style={styles.plusBtn}>
+        <TouchableOpacity
+          style={styles.plusBtn}
+          onPress={(e) => {
+            e.stopPropagation?.();
+            onAdd(item);
+          }}
+        >
           <Text style={styles.plusText}>+</Text>
         </TouchableOpacity>
       </View>
@@ -32,7 +39,7 @@ function ProductCard({ item, onPress }) {
   );
 }
 
-function Section({ title, data, navigation }) {
+function Section({ title, data, navigation, onAdd }) {
   return (
     <View style={styles.section}>
       <View style={styles.sectionHeader}>
@@ -47,6 +54,7 @@ function Section({ title, data, navigation }) {
           <ProductCard
             key={item.id}
             item={item}
+            onAdd={onAdd}
             onPress={() => navigation.navigate("ProductDetail", { product: item })}
           />
         ))}
@@ -56,6 +64,7 @@ function Section({ title, data, navigation }) {
 }
 
 export default function HomeScreen({ navigation }) {
+  const { addToCart } = useCart();
   return (
     <View style={styles.safe}>
       <ScrollView
@@ -93,12 +102,14 @@ export default function HomeScreen({ navigation }) {
           title="Exclusive Offer"
           data={exclusiveOffers}
           navigation={navigation}
+          onAdd={addToCart}
         />
 
         <Section
           title="Best Selling"
           data={bestSelling}
           navigation={navigation}
+          onAdd={addToCart}
         />
 
         <View style={styles.section}>
